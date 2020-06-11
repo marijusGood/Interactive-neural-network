@@ -28,6 +28,7 @@ function AND_ORdatas(){
 	removeSoftmax();
 	nodeLayer.innerHTML = "";
 	nodeLayerNum.innerHTML = "";
+	copyArrays();
 }
 
 $(document).ready(function(){
@@ -63,7 +64,19 @@ $(document).ready(function(){
   })
 
   $('#lrRate').on('input', function() {
-	learningRate = $('#lrRate').val();
+	learningRate = parseFloat($('#lrRate').val());
+  });
+  
+  $('#miniBatch').on('input', function() {
+	  if(inputData.length >= parseInt($('#miniBatch').val())){
+		minibatch = parseInt($('#miniBatch').val());
+	  }else if(inputData.length < parseInt($('#miniBatch').val())){
+		  $("#miniBatch").val(inputData.length);
+	  }
+  });
+  
+  $('#gradSpeed').on('input', function() {
+		momentumSpeed = $('#miniBatch').val();
   });
   
   $('#numIta').on('input', function() {
@@ -109,7 +122,6 @@ $(document).ready(function(){
 
   $("#AND").click(function(){		
 	expectedOutput = [[1],[0],[0],[0]];
-	
 	AND_ORdatas();
   });
   
@@ -424,7 +436,7 @@ $(document).ready(function(){
        [0., 0., 1.]];
  
 	redrawAndNodes();
-	
+	copyArrays();
 	tableChangeIris();
 	
 	var softRadioButtons = document.getElementById("softhide");

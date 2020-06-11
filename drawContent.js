@@ -14,6 +14,10 @@ var inputData =  [[1, 1],
 				[0, 1],
 				[0, 0]];
 var expectedOutput = [[1],[0],[0],[0]];
+var momentumSpeed = 0;
+var shuffleInput;
+var shuffleOut;
+var minibatch = inputData.length;
 
 
 function resizeCanvas() {
@@ -23,6 +27,21 @@ function resizeCanvas() {
 	height = canvs.height;
 	genereateW();
 	tableChange();
+	copyArrays();
+}
+
+function copyArrays(){
+	shuffleInput = new Array(inputData.length).fill(0).map(() => new Array(inputData[0].length).fill(0));
+	shuffleOut = new Array(expectedOutput.length).fill(0).map(() => new Array(expectedOutput[0].length).fill(0));
+	
+	for(var i = 0; i < shuffleInput.length; i++){
+		for(var j = 0; j < shuffleInput[0].length; j++){
+			shuffleInput[i][j] = inputData[i][j];
+		}
+		for(var j = 0; j < expectedOutput[0].length; j++){
+			shuffleOut[i][j] = expectedOutput[i][j];
+		}
+	}
 }
 
 function updateCanvas(){

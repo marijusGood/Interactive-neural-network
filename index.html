@@ -167,9 +167,13 @@ margin-left:0
 		<label for="noSoft">No</label><br>
 	</div>
 	
-	<p>Learning rate: <input type="text" id="lrRate" value="0.01"></p>
+	<p>Learning rate: <input style="width: 50px;" min="0" oninput="this.value = Math.abs(this.value)" type="number" id="lrRate" value="0.01"></p>
 	
-	<p>number of iterations: <input type="text" id="numIta" value="1"></p>
+	<p>Mini Batch size: <input type="number" style="width: 50px;" min="0" oninput="this.value = Math.abs(this.value)" id="miniBatch" value="4"></p>
+	
+	<p>gradients momentum speed: <input type="number" style="width: 50px;" min="0" oninput="this.value = Math.abs(this.value)" id="gradSpeed" value="0"></p>
+	
+	<p>number of iterations: <input type="number" id="numIta" min="0" oninput="this.value = Math.abs(this.value)" style="width: 100px;" value="1"></p>
 	<button id="backProp">Backpropagations</button>
 	
 	<p>The cost of the network:</p>
