@@ -6,11 +6,21 @@ function randomW(input, output) {
     return weight;
 }
 
+function momentumZeros(input, output) {
+    weight = [];
+    for(var i = 0; i < input; i++) {
+        weight.push(Array.from({length: output}, () => 0));
+    }
+    return weight;
+}
+
 function genereateW(){
 	ww = [];
 	loss = [];
+	momentumWW = [];
 	for(var i = nodeCount.length-1; i > 0; i--) {
         ww.push(randomW(nodeCount[i]+1, nodeCount[i-1]));
+		momentumWW.push(momentumZeros(nodeCount[i]+1, nodeCount[i-1]));
     }
 }
 
@@ -95,11 +105,14 @@ function addOnes(layer) {
 function feedforward(weights, input_layer) {
 	var layers = [];
 	layers.push(input_layer);
+	var lastlayerZ;
 	for(var i = 0; i < weights.length; i++) {
 		var temp = addOnes(layers[i]);
 		var layer;
 		if(isSoftmax && i == weights.length-1){
-			layer = softmax(math.multiply(temp, weights[i]));
+			var lastLZcal = math.multiply(temp, weights[i]);
+			layer = softmax(lastLZcal);
+			lastlayerZ = lastLZcal;
 		}else if(isSigmoid){
 			layer = sigmoid(math.multiply(temp, weights[i]));
 		}else{
@@ -110,6 +123,48 @@ function feedforward(weights, input_layer) {
     return layers;
 }
 
+function gradientCheck(input, weights){
+	var epsilon = 0.0000001;
+	var feedFwrd = feedforward(ww, inputData);
+	wwPlus = [];
+	wwMinus = [];
+	for(var i = nodeCount.length-1; i > 0; i--) {
+        wwPlus.push(randomW(nodeCount[i]+1, nodeCount[i-1]));
+		wwMinus.push(randomW(nodeCount[i]+1, nodeCount[i-1]));
+    }
+	
+	for(var i = 0; i < ww.length; i++) {
+		for(var j = 0; j < ww[i].length; j++){
+			for(var k = 0; k < ww[i][j].length; k++){
+				wwPlus[i][j][k] = ww[i][j][k] + epsilon;
+				wwMinus[i][j][k] = ww[i][j][k] - epsilon;
+			}
+		}
+	}
+	var feedFwrdplus = feedforward(wwPlus, inputData);
+	var feedFwrdminus= feedforward(wwMinus, inputData);
+	
+	var gradAprox = [];
+	var numerator = [];
+	for(var i = nodeCount.length-1; i > 0; i--) {
+        gradAprox.push(randomW(4, nodeCount[i-1]));
+		numerator.push(randomW(4, nodeCount[i-1]));
+    }
+
+	for(var j = 0; j < feedFwrdplus.length-1; j++){
+		for(var i = 0; i < feedFwrdplus[j+1].length; i++) {
+			for(var k = 0; k < feedFwrdplus[j+1][i].length-1; k++) {
+				gradAprox[j][i][k] =  (feedFwrdplus[j+1][i][k] - feedFwrdminus[j+1][i][k]) / (2 * epsilon);
+				numerator[j][i][k] = feedFwrd[j+1][i][k] - gradAprox[j][i][k];
+			}
+		}
+	}
+	
+	var num = math.norm(numerator[0], 'fro');
+	var den = math.norm(feedFwrd[1], 'fro') + math.norm(gradAprox[0], 'fro');
+	var diff = num / den;
+	console.log(diff);	
+}
 
 function backpropagation(weights, inputs, layers, expectedOut) {
 	var deltas = [];
@@ -117,13 +172,17 @@ function backpropagation(weights, inputs, layers, expectedOut) {
 	
 	var delts = randomW(layers[layers.length-1].length, layers[layers.length-1][0].len);
 	
-	for(var i = 0; i < expectedOut.length; i++) {
+	for(var i = 0; i < expectedOut.length; i++) {	
 		
 		for(var j = 0; j < expectedOut[i].length; j++) {
-			if(isSigmoid){
-				delts[i][j] = 2*(layers[layers.length-1][i][j] - expectedOut[i][j]) * (layers[layers.length-1][i][j] * (1 - layers[layers.length-1][i][j]));
+			var cost = 2*(layers[layers.length-1][i][j] - expectedOut[i][j]);
+			if(isSoftmax){
+				delts[i][j] = cost * (layers[layers.length-1][i][j] * (1 - layers[layers.length-1][i][j]));
+				//delts[i][j] = layers[layers.length-1][i][j] - (layers[layers.length-1][i][j] * layers[layers.length-1][i][j]);
+			}else if(isSigmoid){
+				delts[i][j] = cost * (layers[layers.length-1][i][j] * (1 - layers[layers.length-1][i][j]));
 			} else{
-				delts[i][j] = 2*(layers[layers.length-1][i][j] - expectedOut[i][j]);
+				delts[i][j] = cost;
 			}
 		}
 	}
@@ -152,9 +211,7 @@ function backpropagation(weights, inputs, layers, expectedOut) {
 						x[u][j] = sigmodiDerivative[u][j] * x[u][j];
 					}
 				}
-				
 			}
-			
 		}
 		
 		deltas.push(x);
@@ -167,7 +224,8 @@ function backpropagation(weights, inputs, layers, expectedOut) {
 		for(var u = 0; u < skr.length; u++) {
 			for(var j = 0; j < skr[u].length; j++){
 				skr[u][j] /= inputs.length;
-				skr[u][j] *= learningRate;
+				//skr[u][j] *= learningRate;
+				momentumWW[i][u][j] = (momentumSpeed * momentumWW[i][u][j]) + (1 - momentumSpeed)*skr[u][j];
 			}
 		}
 		
@@ -182,7 +240,7 @@ function backpropagation(weights, inputs, layers, expectedOut) {
 }
 
 function combine() {
-	
+	//gradientCheck(inputData, ww);
 	for(var u = 0; u < numerOfIta; u++){
 		var lossCount = 0;
 		shuffle(shuffleInput, shuffleOut);
@@ -201,17 +259,16 @@ function combine() {
 				}
 			}
 			
-			
-			for(var i = 0; i < gradientsW.length; i++) {
-				for(var j = 0; j < gradientsW[i].length; j++){
-					for(var k = 0; k < gradientsW[i][j].length; k++){
-						ww[gradientsW.length-i-1][j][k] -= gradientsW[i][j][k];
+			for(var i = 0; i < ww.length; i++) {
+				for(var j = 0; j < ww[i].length; j++){
+					for(var k = 0; k < ww[i][j].length; k++){
+						ww[i][j][k] -= (momentumWW[i][j][k] * learningRate);
 					}
 				}
 			}
 			
 		}
-		
+		lossCount /= shuffleInput.length;
 		if(loss.length > 0){
 			loss.push([loss[loss.length-1][0]+1, lossCount]);
 		} else {

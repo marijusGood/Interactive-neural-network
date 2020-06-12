@@ -15,6 +15,7 @@ var inputData =  [[1, 1],
 				[0, 0]];
 var expectedOutput = [[1],[0],[0],[0]];
 var momentumSpeed = 0;
+var momentumWW = [];
 var shuffleInput;
 var shuffleOut;
 var minibatch = inputData.length;

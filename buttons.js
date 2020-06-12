@@ -1,7 +1,12 @@
+//variables for displaying nets size
 var nodeLayer = document.getElementById("layers");
 var nodeLayerNum = document.getElementById("nodeNum");
 
-//generates new weights and re-draws the canvas and resets the cost field
+/**
+* generates new weights and re-draws the canvas and resets the cost
+* and layerNum field
+* 
+*/
 function redrawAndNodes(){
 	genereateW();
 	draw();
@@ -72,11 +77,12 @@ $(document).ready(function(){
 		minibatch = parseInt($('#miniBatch').val());
 	  }else if(inputData.length < parseInt($('#miniBatch').val())){
 		  $("#miniBatch").val(inputData.length);
+		  minibatch = inputData.length;
 	  }
   });
   
   $('#gradSpeed').on('input', function() {
-		momentumSpeed = $('#miniBatch').val();
+		momentumSpeed = parseFloat($('#gradSpeed').val());
   });
   
   $('#numIta').on('input', function() {
