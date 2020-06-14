@@ -6,7 +6,11 @@ var loss = [];
 var height;
 var learningRate = 0.05;
 var isSigmoid = false;
+var multiOutput = false;//nereikia sito kolkas
+var isIdentity = false;
+var isTanh = false;
 var isSoftmax = false;
+var isRelu = true;
 var numerOfIta = 1;
 var nodeCount = [1, 2];
 var inputData =  [[1, 1],
@@ -19,7 +23,7 @@ var momentumWW = [];
 var shuffleInput;
 var shuffleOut;
 var minibatch = inputData.length;
-
+var derNodes;
 
 function resizeCanvas() {
     

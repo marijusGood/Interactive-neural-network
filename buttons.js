@@ -34,6 +34,7 @@ function AND_ORdatas(){
 	nodeLayer.innerHTML = "";
 	nodeLayerNum.innerHTML = "";
 	copyArrays();
+	multiOutput = false;
 }
 
 $(document).ready(function(){
@@ -447,7 +448,7 @@ $(document).ready(function(){
 	
 	var softRadioButtons = document.getElementById("softhide");
 	softRadioButtons.style.display = "block";
-	
+	multiOutput = true;
 	nodeLayer.innerHTML = "";
 	nodeLayerNum.innerHTML = "";
   });
@@ -455,7 +456,10 @@ $(document).ready(function(){
   $("#relu")
     .change(function(){
         if( $(this).is(":checked") ){
-            isSigmoid = false;
+			isIdentity = false;
+			isTanh = false;
+			isSigmoid = false;
+			isRelu = true;
 			loss = [];
         }
     });
@@ -463,7 +467,32 @@ $(document).ready(function(){
 	$("#Sigmoid")
     .change(function(){
         if( $(this).is(":checked") ){
-            isSigmoid = true;
+            isIdentity = false;
+			isTanh = false;
+			isSigmoid = true;
+			isRelu = false;
+			loss = [];
+        }
+    });
+	
+	$("#identity")
+    .change(function(){
+        if( $(this).is(":checked") ){
+            isIdentity = true;
+			isTanh = false;
+			isSigmoid = false;
+			isRelu = false;
+			loss = [];
+        }
+    });
+	
+	$("#tanh")
+    .change(function(){
+        if( $(this).is(":checked") ){
+            isIdentity = false;
+			isTanh = true;
+			isSigmoid = false;
+			isRelu = false;
 			loss = [];
         }
     });
