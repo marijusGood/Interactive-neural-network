@@ -8,7 +8,8 @@
 
 
       data.addRows(loss);
-
+	  
+		
       var options = {
 		chart: {
           title: 'The Cost of the network',
@@ -19,6 +20,10 @@
       };
 
       var chart = new google.charts.Line(document.getElementById('line_top_x'));
-
+	  //remove googles erorr that the loss array is empty
+	  google.visualization.events.addListener(chart, 'error', function (googleError) {
+		google.visualization.errors.removeError(googleError.id);
+      });
+	  
       chart.draw(data, google.charts.Line.convertOptions(options));
     }

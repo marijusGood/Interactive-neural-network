@@ -8,6 +8,7 @@ var learningRate = 0.05;
 var isSigmoid = false;
 var multiOutput = false;//nereikia sito kolkas
 var isIdentity = false;
+var isOwnInput = false;
 var isTanh = false;
 var isSoftmax = false;
 var isRelu = true;
@@ -154,10 +155,59 @@ function lines() {
 				
 			}
 		
-			//console.log(i);
 		}
 	}
 	
+}
+function updateInputTable(){
+	var table = document.getElementById("tables");
+	var row = table.insertRow(table.rows.length);
+	
+	for(var j = 0; j < nodeCount[nodeCount.length-1]; j++) {
+		var cell = row.insertCell(j);
+		cell.innerHTML = inputData[inputData.length-1][j];
+	}
+	for(var j = 0; j < expectedOutput[expectedOutput.length-1].length; j++) {
+		var cell = row.insertCell(nodeCount[nodeCount.length-1]+j);
+		cell.innerHTML = expectedOutput[expectedOutput.length-1][j];
+	}
+	
+	for(var j = nodeCount[0] + nodeCount[nodeCount.length-1]; j < nodeCount[0]*2 + nodeCount[nodeCount.length-1]; j++) {
+		var cell = row.insertCell(j);
+	}
+	
+}
+function inputDataTable(){
+	var table = document.getElementById("tables");
+	table.innerHTML = "";
+	var rows = table.insertRow(0);
+	
+	for(var i = 0; i < nodeCount[nodeCount.length-1]; i++){
+		var cell = rows.insertCell(i);
+		cell.innerHTML = "Input "+(i+1);
+	}
+	
+	for(var i = 0; i < nodeCount[0]; i++){
+		var cell = rows.insertCell(i+nodeCount[nodeCount.length-1]);
+		cell.innerHTML = "Expected Output "+(i+1);
+	}
+	
+	for(var i = 0; i < nodeCount[0]; i++){
+		var cell = rows.insertCell(i+nodeCount[nodeCount.length-1] + nodeCount[0]);
+		cell.innerHTML = "Predicted Output "+(i+1);
+	}
+
+	var buttonPos = 0;
+	for(var i = 0; i < nodeCount[0] + nodeCount[nodeCount.length-1]; i++){
+		buttonPos += table.rows[0].cells[i].offsetWidth-7;
+		var x = document.createElement("INPUT");
+		x.setAttribute("type", "number");
+		x.id = i;
+		x.style.width = (table.rows[0].cells[i].offsetWidth-7) + 'px';
+		document.body.appendChild(x);
+		 
+	}
+	document.getElementById("addInfo").style.left = buttonPos + (nodeCount[0] + 2 + nodeCount[nodeCount.length-1]) *7 +'px';
 }
 
 function tableChange() {
@@ -183,11 +233,10 @@ function tableChange() {
 		cell.innerHTML = expectedOutput[i];
 		var cell = row.insertCell(inputData[i].length+1);
 	}
-
 }
 
 function tableChangeIris() {
-	var table = document.getElementById("tables");
+	var table = document.getElementById("tables");	
 	table.innerHTML = "";
 	var rows = table.insertRow(0);
 	var cells1 = rows.insertCell(0);
@@ -233,7 +282,7 @@ function tableChangeIris() {
 function updateTable(ans){
 
 	var table = document.getElementById("tables");
-	var tableLen = document.getElementById('tables').rows[0].cells.length
+	var tableLen = document.getElementById('tables').rows[0].cells.length;
 	for(var i = 0; i < ans.length; i++) {
 		for(var j = 0; j < ans[i].length; j++){
 			var row = table.rows[i+1].cells;

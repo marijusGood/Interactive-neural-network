@@ -13,7 +13,24 @@ function redrawAndNodes(){
 	$("#costNum").text("");
 	$("#layerNum").text(nodeCount.length);
 }
-
+function setMiniBatc(){
+	$("#miniBatch").val(inputData.length);
+	minibatch = inputData.length;
+}
+function customDataManipulation(){
+	expectedOutput = [];
+	inputData = [];
+	redrawAndNodes();
+	inputDataTable();
+	copyArrays();
+}
+function removeInputs(){
+	if(isOwnInput){
+		for(var i = 0; i < nodeCount[0] + nodeCount[nodeCount.length-1]; i++){
+			document.getElementById(i).remove();
+		}
+	}
+}
 function removeSoftmax(){
 	isSoftmax = false;
 	document.getElementById('yesSoft').checked = false;
@@ -23,6 +40,7 @@ function removeSoftmax(){
 }
 
 function AND_ORdatas(){
+	removeInputs();
 	nodeCount = [1, 2];
 	inputData =  [[1, 1],
 				 [1, 0],
@@ -31,10 +49,15 @@ function AND_ORdatas(){
 	redrawAndNodes();
 	tableChange();
 	removeSoftmax();
+	setMiniBatc();
 	nodeLayer.innerHTML = "";
 	nodeLayerNum.innerHTML = "";
 	copyArrays();
 	multiOutput = false;
+	document.getElementById("hideInput").style.display = "none";
+	document.getElementById("addInfo").style.display = "none";
+	drawChart();
+	isOwnInput = false;
 }
 
 $(document).ready(function(){
@@ -77,8 +100,7 @@ $(document).ready(function(){
 	  if(inputData.length >= parseInt($('#miniBatch').val())){
 		minibatch = parseInt($('#miniBatch').val());
 	  }else if(inputData.length < parseInt($('#miniBatch').val())){
-		  $("#miniBatch").val(inputData.length);
-		  minibatch = inputData.length;
+		 setMiniBatc();
 	  }
   });
   
@@ -119,6 +141,23 @@ $(document).ready(function(){
 	}
   });
   
+  $("#addInfo").click(function(){
+	  var temp = [];
+	  for(var i = 0; i < nodeCount[nodeCount.length-1]; i++){
+		temp.push(parseFloat($('#' + i.toString()).val()));
+	  }
+	  inputData.push(temp);
+	  
+	  temp = [];
+	  for(var i = nodeCount[nodeCount.length-1]; i < nodeCount[0] + nodeCount[nodeCount.length-1]; i++){
+		temp.push(parseFloat($('#' + i.toString()).val()));
+	  }
+	  expectedOutput.push(temp);
+	  updateInputTable();
+	  copyArrays();
+	  setMiniBatc();
+  });
+  
   $('.chooseData').click(function(e) {
     if (!$(this).hasClass("active")) {
 		$('.chooseData').not(this).removeClass('active');    
@@ -127,6 +166,54 @@ $(document).ready(function(){
 	}
   });
 
+  $("#ownData").click(function(){
+	document.getElementById("hideInput").style.display = "block";	  
+	document.getElementById("addInfo").style.display = "block";
+	nodeCount = [1,1];
+	customDataManipulation();
+	setMiniBatc();
+	isOwnInput = true;
+	drawChart();
+  });
+  
+  $("#inputMin").click(function(){
+	  if(nodeCount[nodeCount.length-1] > 1){
+		  removeInputs();
+		  nodeCount[nodeCount.length-1]--;
+		  $("#inputNum").text(nodeCount[nodeCount.length - 1]);
+		  customDataManipulation();
+	  }
+  });
+  
+  $("#inputAdd").click(function(){
+	  removeInputs();
+	  nodeCount[nodeCount.length-1]++;
+	  $("#inputNum").text(nodeCount[nodeCount.length - 1]);
+	  customDataManipulation();
+  });
+  
+  $("#outputMin").click(function(){
+	  if(nodeCount[0] > 1){
+		  removeInputs();
+		  nodeCount[0]--;
+		  $("#outputNum").text(nodeCount[0]);
+		  customDataManipulation();
+	  } 
+	  if(nodeCount[0] < 2){
+		  removeSoftmax();
+	  }
+  });
+  
+  $("#outputAdd").click(function(){
+	  removeInputs();
+	  nodeCount[0]++;
+	  $("#outputNum").text(nodeCount[0]);
+	  customDataManipulation();
+	  if(nodeCount[0] > 1){
+		  document.getElementById("softhide").style.display = "block";
+	  }
+  });
+  
   $("#AND").click(function(){		
 	expectedOutput = [[1],[0],[0],[0]];
 	AND_ORdatas();
@@ -139,7 +226,7 @@ $(document).ready(function(){
   });
   
   $("#flower").click(function(){
-  
+	removeInputs();
 	nodeCount = [3, 4];
 	inputData =  [[6.1, 2.8, 4.7, 1.2],
        [5.7, 3.8, 1.7, 0.3],
@@ -442,13 +529,17 @@ $(document).ready(function(){
        [1., 0., 0.],
        [0., 0., 1.]];
  
+	setMiniBatc();
 	redrawAndNodes();
 	copyArrays();
 	tableChangeIris();
+	drawChart();
 	
-	var softRadioButtons = document.getElementById("softhide");
-	softRadioButtons.style.display = "block";
+	document.getElementById("addInfo").style.display = "none";
+	document.getElementById("hideInput").style.display = "none";
+	document.getElementById("softhide").style.display = "block";
 	multiOutput = true;
+	isOwnInput = false;
 	nodeLayer.innerHTML = "";
 	nodeLayerNum.innerHTML = "";
   });

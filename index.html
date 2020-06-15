@@ -62,7 +62,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
   top: 0;
 }
 .data {
-  padding: 0.1% 5%;
+  padding: 0.1% 2%;
 }
 .params {
   position: absolute;
@@ -78,6 +78,10 @@ hr.hrr {
   width:80%;
 text-align:left;
 margin-left:0
+}
+.input {
+padding: 0.1% 2%;
+display: inline-block;
 }
 .chart {
   position: absolute;
@@ -110,9 +114,10 @@ margin-left:0
 </style>
 
 <div class="data">
-<button class="chooseData active" style="padding: 0.1% 12%;" id="AND">AND</button>
-<button class="chooseData" style="padding: 0.1% 12%;" id="OR">OR</button>
-<button class="chooseData" style="padding: 0.1% 12%;" id="flower">Iris</button>
+<button class="chooseData active" style="width: 20%;" id="AND">AND</button>
+<button class="chooseData" style="width: 20%;" id="OR">OR</button>
+<button class="chooseData" style="width: 20%;" id="flower">Iris flower dataset</button>
+<button class="chooseData" style="width: 20%;" id="ownData">Your own data</button>
 </div>
 
 <div class="vl"></div>
@@ -190,8 +195,26 @@ Your browser does not support the canvas element. You Should use newer website.
 
 <hr class="hrr">
 
+<div id="hideInput" style="display: none">
+	<div class="input">
+		<p>Number of different inputs:</p>
+		<button id="inputMin">-</button>
+		<label id="inputNum">1</label>
+		<button id="inputAdd">+</button>
+	</div>
+
+	<div class="input">
+		<p>Number of different outputs:</p>
+		<button id="outputMin">-</button>
+		<label id="outputNum">1</label>
+		<button id="outputAdd">+</button>
+	</div>
+</div>
+
 <table style="width:30%" id="tables">
 </table>
+
+<button id="addInfo" style="position: absolute; display: none;">Add data to the table</button>
 
 <div class="googleChart" id="line_top_x" class="chart"></div>
 
