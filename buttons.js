@@ -173,6 +173,7 @@ $(document).ready(function(){
 	customDataManipulation();
 	setMiniBatc();
 	isOwnInput = true;
+	removeSoftmax();
 	drawChart();
   });
   
