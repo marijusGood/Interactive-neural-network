@@ -318,7 +318,7 @@ function combine() {
 	var feedFwrd = feedforward(ww, inputData);
 	for(var i = 0; i < feedFwrd[feedFwrd.length-1].length; i++){
 		for(var j = 0; j < feedFwrd[feedFwrd.length-1][i].length; j++){
-			feedFwrd[feedFwrd.length-1][i][j] = Math.round(feedFwrd[feedFwrd.length-1][i][j] * 10000) / 10000
+			feedFwrd[feedFwrd.length-1][i][j] = parseFloat(feedFwrd[feedFwrd.length-1][i][j].toFixed(4));
 		}
 	}
 	

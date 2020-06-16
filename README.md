@@ -26,6 +26,6 @@ Iris dataset it will change the data on screen and the allays responsible for wo
 drawContent.js - it draws all of the graphics(I'm good at creating file names) and it modifies the table that shows how the network
 is doing. Also it stores all of the variables.
 
-googleLineChart.js - makes 
+googleLineChart.js - makes a linear chart that shows networks loss over each iteration.
 
 ![](show.gif)
