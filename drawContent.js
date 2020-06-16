@@ -1,3 +1,5 @@
+/** @author Marijus Gudiskis marijus.good@gmail.com*/
+
 var canvs = document.getElementById("snow");//this is the canvas element in the HTML document
 var ctx = canvs.getContext("2d");//
 var ww = [];//this is where all the wights and biases are stored for each layer
@@ -178,7 +180,7 @@ function lines(nodes) {
 * @param {(number|Array)} outputlayer 2d output array, one of the outputs
 * @param {table} the table in the HTML file
 */
-function updateInputTable(inputLayer, outputlayer, table){
+function updateInputTable(inputLayer, outputlayer, predictedLayer, table){
 	let row = table.insertRow(table.rows.length);
 	
 	for(let j = 0; j < inputLayer.length; j++) {
@@ -192,7 +194,7 @@ function updateInputTable(inputLayer, outputlayer, table){
 		cell.innerHTML = parseFloat(outputlayer[j].toFixed(4));
 	}
 	
-	for(let j = outputlayer.length + inputLayer.length; j < outputlayer.length*2 + inputLayer.length; j++) {
+	for(let j = outputlayer.length + inputLayer.length; j < outputlayer.length + inputLayer.length + predictedLayer; j++) {
 		//crates predicted output fields
 		row.insertCell(j);
 	}
@@ -272,7 +274,7 @@ function tableChange(table) {
 	
 	for(let i = 0; i < inputData.length; i++) {
 		//putting one input and output row at a time
-		updateInputTable(inputData[i], expectedOutput[i], table);
+		updateInputTable(inputData[i], expectedOutput[i], expectedOutput[i].length, table);
 	}
 }
 
@@ -303,29 +305,18 @@ function tableChangeIris(table) {
 	cells8.innerHTML = "predicted Iris-virginica";
 	
 	for(let i = 0; i < inputData.length; i++) {
-		let row = table.insertRow(i+1);//creating a new row
-		let cell;
-		for(let j = 0; j < inputData[i].length; j++) {
-			//crating the input cells and populating them
-			cell = row.insertCell(j);
-			cell.innerHTML = inputData[i][j];
-		}
+		updateInputTable(inputData[i], [1], expectedOutput[i].length, table);//populates the table
+		let cell = table.rows[i+1].cells;//all of the cells in the i'th row
 		
-		//creating the expected output and populating it
-		cell = row.insertCell(inputData[i].length);
-		//look in what position the 1 is and write the name
+		//look in what position the 1 is in the expectedOutput[i] and accordingly write the name to the "Species" cell
 		if(expectedOutput[i][0] == 1){
-			cell.innerHTML = "Iris-setosa";
+			cell[inputData[i].length].innerHTML = "Iris-setosa";
 		}else if(expectedOutput[i][1] == 1){
-			cell.innerHTML = "Iris-versicolor";
+			cell[inputData[i].length].innerHTML = "Iris-versicolor";
 		}else if(expectedOutput[i][2] == 1){
-			cell.innerHTML = "Iris-virginica";
+			cell[inputData[i].length].innerHTML = "Iris-virginica";
 		}
 		
-		//adding the cells for predicted output
-		cell = row.insertCell(inputData[i].length+1);
-		cell = row.insertCell(inputData[i].length+2);
-		cell = row.insertCell(inputData[i].length+3);
 	}
 }
 
@@ -342,7 +333,7 @@ function updatePredictedTable(ans, table){
 		
 		for(let j = 0; j < ans[i].length; j++){
 			//populating the predicted values
-			cell[tableLen-(ans[i].length - j)].innerHTML = ans[i][j];
+			cell[tableLen-(ans[i].length - j)].innerHTML = parseFloat(ans[i][j].toFixed(4));;
 		}
 	}
 }

@@ -1,3 +1,5 @@
+/** @author Marijus Gudiskis marijus.good@gmail.com*/
+
 /**
 * generates new weights and re-draws the canvas and resets the cost
 * and layerNum field
@@ -64,6 +66,7 @@ function switchingBetweenDatas(){
 	isOwnInput = false;
 	document.getElementById("layers").innerHTML = "";
 	document.getElementById("nodeNum").innerHTML = "";
+	document.getElementById('norml').disabled = false;
 }
 
 $(document).ready(function(){
@@ -117,10 +120,12 @@ $(document).ready(function(){
 		}
 	});
 	
-	/** */
+	/** pressing "Do data normalization" normalizes the data input and displays it on the table*/
 	$("#norml").click(function(){
+		let arrayColumn = (n) => inputData.map(x => x[n]);//take a column of input array
+		
+		//do the Rescaling (min-max normalization)
 		for(let i = 0; i < inputData[0].length; i++){
-			let arrayColumn = (n) => inputData.map(x => x[n]);
 			let colum = arrayColumn(i);
 			let max = Math.max.apply(null, colum);
 			let min = Math.min.apply(null, colum);
@@ -130,9 +135,18 @@ $(document).ready(function(){
 				inputData[j][i] = (inputData[j][i] - min) / div;
 			}
 		}
+		
+		//copy to the shuffle arrays and remove ability to press the button, becauce you do normalization once
 		shuffleInput, shuffleOut = copyArrays(inputData, expectedOutput);
 		document.getElementById('norml').disabled = true;
-		tableChange(table);//this is wrong
+		
+		//this is bad implementation, but if its 150 elements then it is Iris database, I dont 
+		//think anyone will enter 150 elements by hand
+		if(inputData.length >= 150){
+			tableChangeIris(table);
+		}else {
+			tableChange(table);//if its less then 150 elements then use simple table population function
+		}
 	});
 	
 	/** whenever you type different gradient momentum in gradMomentum it will change the momentumSpeed*/
@@ -194,7 +208,7 @@ $(document).ready(function(){
 		}
 		expectedOutput.push(temp);
 		
-		updateInputTable(inputData[inputData.length-1], expectedOutput[expectedOutput.length-1], table);
+		updateInputTable(inputData[inputData.length-1], expectedOutput[expectedOutput.length-1], expectedOutput[expectedOutput.length-1].length, table);
 		shuffleInput, shuffleOut = copyArrays(inputData, expectedOutput);
 		setMiniBatch();
 	});
@@ -214,6 +228,7 @@ $(document).ready(function(){
 	$("#ownData").click(function(){
 		document.getElementById("hideInput").style.display = "block";		
 		document.getElementById("addInfo").style.display = "block";
+		document.getElementById('norml').disabled = false;
 		nodeCount = [1,1];
 		customDataManipulation();
 		setMiniBatch();
