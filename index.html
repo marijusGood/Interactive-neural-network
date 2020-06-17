@@ -1,7 +1,11 @@
 <!DOCTYPE HTML>
+
+<!-- author Marijus Gudiskis marijus.good@gmail.com -->
+
 <html>
 
 <head>
+	<!-- importing libraries -->
 	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 	<script src="https://unpkg.com/mathjs@7.0.0/dist/math.min.js" type="text/javascript"></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -112,7 +116,7 @@ display: inline-block;
 .btn:hover {background: #eee;}
 .info {color: dodgerblue;}
 </style>
-
+<!-- This is the dataset buttons -->
 <div class="data">
 <button class="chooseData active" style="width: 20%;" id="AND">AND</button>
 <button class="chooseData" style="width: 20%;" id="OR">OR</button>
@@ -123,7 +127,7 @@ display: inline-block;
 <div class="vl"></div>
 <button class="btn info" id="infoBtn">Info</button>
 
-
+<!-- infoBox and text about the website -->
 <div id="infoBox" class="modal">
 
   <!-- Modal content -->
@@ -140,6 +144,7 @@ display: inline-block;
   </div>
 </div>
 
+<!-- all of the parameters for the network -->
 <div class="params">
 	
 	<h style="font-size:30px">Parameters:</h>
@@ -186,17 +191,20 @@ display: inline-block;
 	
 	<button id="norml">Do data normalization</button>
 	<br> <br> 
-	<button id="backProp">Backpropagations</button>
+	<button id="backProp">Backpropagation</button>
 	
 	<p>The cost of the network:</p>
 	<label id="costNum"></label>
 </div>
 
+<!-- canvas where the network will be displayed -->
 <canvas id="snow" width="200" height="100">
 Your browser does not support the canvas element. You Should use newer website.
 </canvas>
 
 <hr class="hrr">
+
+<!-- settings for writhing your own data -->
 
 <div id="hideInput" style="display: none">
 	<div class="input">
@@ -214,13 +222,17 @@ Your browser does not support the canvas element. You Should use newer website.
 	</div>
 </div>
 
+<!-- table where all of the input and output will be displayed -->
 <table style="width:30%" id="tables">
 </table>
 
+<!-- button to add to the table and the data arrays -->
 <button id="addInfo" style="position: absolute; display: none;">Add data to the table</button>
 
+<!-- linear graph that shows how the network is doing -->
 <div class="googleChart" id="line_top_x" class="chart"></div>
 
+<!-- displays the info box -->
 <script>
 // from https://www.w3schools.com/
 var modal = document.getElementById("infoBox");
@@ -241,6 +253,7 @@ window.onclick = function(event) {
 }
 </script>
 
+<!-- all of the code for running the network and its options -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="drawContent.js"></script>
 <script src="neuralNetwork.js"></script>

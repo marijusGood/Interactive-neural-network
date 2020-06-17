@@ -7,29 +7,32 @@
 function redrawNodesAndWeights(){
 	genereateW();
 	draw();
-	$("#costNum").text("");
-	$("#layerNum").text(nodeCount.length);
+	$("#costNum").text("");//cost number is ""
+	$("#layerNum").text(nodeCount.length);//number of layers is the length of the network
 }
 
 /** After switching datasets reset the miniBatch size*/
 function setMiniBatch(){
-	$("#miniBatch").val(inputData.length);
+	$("#miniBatch").val(inputData.length);//set mini-batch label to the length of the input data
 	minibatch = inputData.length;
 }
-/** */
+/** if user is writing his own data then input and output arrays will be deleted,
+* table and nodes will be redrawn and new weights will be created
+*/
 function customDataManipulation(){
 	expectedOutput = [];
 	inputData = [];
 	redrawNodesAndWeights();
-	inputDataTable(table);
+	inputDataTable(table);//redraws the table
 	shuffleInput, shuffleOut = copyArrays(inputData, expectedOutput);
 }
 
+/** this just redraw Nodes And crates new Weights and shows current nodes in a layer*/
 function nodeAddAndSubCombination(){
 	$("#nodeNum").text(nodeCount[nodeCount.length - $('#layers').val()]);
 	redrawNodesAndWeights();
 }
-
+/** removes the input fields that were crated wen the user wanted to input his own data */
 function removeInputs(){
 	if(isOwnInput){
 		for(var i = 0; i < nodeCount[0] + nodeCount[nodeCount.length-1]; i++){
@@ -37,6 +40,8 @@ function removeInputs(){
 		}
 	}
 }
+
+/** removes softmax option from the website and resets the softmax parameters*/
 function removeSoftmax(){
 	isSoftmax = false;
 	document.getElementById('yesSoft').checked = false;
@@ -45,6 +50,7 @@ function removeSoftmax(){
 	softRadioButtons.style.display = "none";
 }
 
+/** common code for the AND and OR datasets*/
 function AND_ORdatas(){
 	removeInputs();
 	nodeCount = [1, 2];
@@ -56,17 +62,21 @@ function AND_ORdatas(){
 	removeSoftmax();
 	switchingBetweenDatas();
 }
+
+/** when switching between datasets: reset mini-batch, redraw nodes and redo weights,
+* redraw Google chart remove input own data fields and reset display data
+ */
 function switchingBetweenDatas(){
 	setMiniBatch();
 	redrawNodesAndWeights();
 	shuffleInput, shuffleOut = copyArrays(inputData, expectedOutput);
 	drawChart();
-	document.getElementById("hideInput").style.display = "none";
+	document.getElementById("hideInput").style.display = "none";//hides the "your own data" parameters
 	document.getElementById("addInfo").style.display = "none";
 	isOwnInput = false;
-	document.getElementById("layers").innerHTML = "";
+	document.getElementById("layers").innerHTML = "";//reset the display data like how many layer there are
 	document.getElementById("nodeNum").innerHTML = "";
-	document.getElementById('norml').disabled = false;
+	document.getElementById('norml').disabled = false;//allow to normalize data
 }
 
 $(document).ready(function(){

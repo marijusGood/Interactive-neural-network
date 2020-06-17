@@ -1,3 +1,5 @@
+/** @author Marijus Gudiskis marijus.good@gmail.com*/
+
 function randomW(input, output) {
     weight = [];
     for(var i = 0; i < input; i++) {
