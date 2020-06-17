@@ -282,8 +282,12 @@ function backpropagation(weights, inputs, layers, expectedOut) {
 function combine() {
 	//gradientCheck(inputData, ww);
 	let checkTheOutputSize = feedforward(ww, inputData);
-	while(checkTheOutputSize[checkTheOutputSize.length-1][0][0] > 10) {
-		checkTheOutputSize[checkTheOutputSize.length-1][0][0] /= 10;
+	let checkTheOutput = 0;
+	for(let h = 0; h < checkTheOutputSize[checkTheOutputSize.length-1][0].length; h++){
+		checkTheOutput += Math.abs(checkTheOutputSize[checkTheOutputSize.length-1][0][h])
+	}
+	while(checkTheOutput > 1) {
+		checkTheOutput /= 10;
 		learningRate /= 10;
 		document.getElementById('lrRate').value = learningRate;
 	}
@@ -318,23 +322,29 @@ function combine() {
 		}
 		
 		if(isSigmoid){
-			let tempindicator = Math.abs(momentumWW[momentumWW.length-1][0][0]);
-			if(tempindicator * learningRate < 0.1 && momentumSpeed > 0) {
+			let tempindicator = 0;
+			for(let h = 0; h < momentumWW[momentumWW.length-1][0].length; h++){
+				tempindicator += Math.abs(momentumWW[momentumWW.length-1][0][h])
+			}
+			if(tempindicator * learningRate < 0.001 && momentumSpeed > 0) {
 				
-				learningRate += lossCount/100;
+				learningRate += 0.015;
 			}
 		}
 		if(isRelu){
-			let tempindicator = Math.abs(momentumWW[momentumWW.length-1][0][0]);
+			let tempindicator = 0;
+			for(let h = 0; h < momentumWW[momentumWW.length-1][0].length; h++){
+				tempindicator += Math.abs(momentumWW[momentumWW.length-1][0][h])
+			}
 			if(tempindicator * learningRate < 0.001) {
 				
-				learningRate += lossCount/100;
+				//learningRate += 0.0015;
 			}
 		}
 		
 		let sss = loss[loss.length-parseInt(loss.length*0.01)-1][1] - loss[loss.length-1][1];
 		if(Math.abs((momentumWW[momentumWW.length-1][0][0] * learningRate)) < 0.01 && learningRate < 50&& isSigmoid && sss < 0.00000001 && momentumSpeed == 0){
-			learningRate += 0.01;
+			//learningRate += 0.01;
 			document.getElementById('lrRate').value = learningRate;
 		}
 	}
