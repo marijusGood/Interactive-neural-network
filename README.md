@@ -5,35 +5,35 @@ This is an interactive neural network where you can see how it works and change 
 
 https://neuralnetworkmodel.000webhostapp.com/
 
-## The website in acion
-![](pictures\show.gif)
+## The website in action
+![](https://github.com/marijusGood/Interactive-neural-network/blob/master/pictures/show.gif)
 
 
 ## About the project itself:
 There are 3 loaded datasets: AND, OR and Iris flower datasets, press on the there buttons at the very top to load the datasets.
-![](pictures\datasets.PNG)
+![](https://github.com/marijusGood/Interactive-neural-network/blob/master/pictures/datasets.PNG)
 
 You can train this network with your own data, press on "Your own data" and below network diagram select input and output size.
 Then write your own data into the table in the input fields and press "Add data to the table".
-![](pictures\yourOwn.PNG)
+![](https://github.com/marijusGood/Interactive-neural-network/blob/master/pictures/yourOwn.PNG)
 
 The canvas displays the neural network, in the middle of the node the bias is shown. If the weight between the nodes is positive it will be
 red, the bigger the number, the more red it is. If the weight is blue then is is negative and the more blue it is, the bigger
 the negative is. Also it shows which nodes and input layer(the arrows are pointing to the nodes) and which one is output layer(the arrows are
 pointing from the nodes).
-![](pictures\canvas.PNG)
+![](https://github.com/marijusGood/Interactive-neural-network/blob/master/pictures/canvas.PNG)
 
 You can add more or less layers in an network or nodes in a layer.
-![](pictures\layers.PNG)
+![](https://github.com/marijusGood/Interactive-neural-network/blob/master/pictures/layers.PNG)
 
 You have a whole set of parameters you can tweak to see which one dose what and train your model faster.
-![](pictures\parameters.PNG)
+![](https://github.com/marijusGood/Interactive-neural-network/blob/master/pictures/parameters.PNG)
 
 The table below shows inputs, expected outputs and predicted outputs.
-![](pictures\table.PNG)
+![](https://github.com/marijusGood/Interactive-neural-network/blob/master/pictures/table.PNG)
 
 The graph shows how this model preformed with each iteration.
-![](pictures\graph.PNG)
+![](https://github.com/marijusGood/Interactive-neural-network/blob/master/pictures/graph.PNG)
 
 ## About the code:
 I used HTML, CSS and Javascript.
