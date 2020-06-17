@@ -1,9 +1,7 @@
-/** @author Marijus Gudiskis marijus.good@gmail.com*/
-
 function randomW(input, output) {
     weight = [];
     for(var i = 0; i < input; i++) {
-        weight.push(Array.from({length: output}, () => Math.random()+0.0001));
+        weight.push(Array.from({length: output}, () => Math.random()));
     }
     return weight;
 }
@@ -273,18 +271,23 @@ function backpropagation(weights, inputs, layers, expectedOut) {
 			}
 		}
 		
-		gradientsW.push(skr);
+		gradientsW.push(momentumWW);
 		
 		q++;
 	}
-   
-
    
     return [gradientsW, loss];
 }
 
 function combine() {
 	//gradientCheck(inputData, ww);
+	let checkTheOutputSize = feedforward(ww, inputData);
+	while(checkTheOutputSize[checkTheOutputSize.length-1][0][0] > 10) {
+		checkTheOutputSize[checkTheOutputSize.length-1][0][0] /= 10;
+		learningRate /= 10;
+		document.getElementById('lrRate').value = learningRate;
+	}
+	
 	for(var u = 0; u < numerOfIta; u++){
 		var lossCount = 0;
 		shuffle(shuffleInput, shuffleOut);
@@ -306,7 +309,6 @@ function combine() {
 					}
 				}
 			}
-			
 		}
 		lossCount /= shuffleInput.length;
 		if(loss.length > 0){
@@ -315,8 +317,29 @@ function combine() {
 			loss.push([0, lossCount]);
 		}
 		
+		if(isSigmoid){
+			let tempindicator = Math.abs(momentumWW[momentumWW.length-1][0][0]);
+			if(tempindicator * learningRate < 0.1 && momentumSpeed > 0) {
+				
+				learningRate += lossCount/100;
+			}
+		}
+		if(isRelu){
+			let tempindicator = Math.abs(momentumWW[momentumWW.length-1][0][0]);
+			if(tempindicator * learningRate < 0.001) {
+				
+				learningRate += lossCount/100;
+			}
+		}
+		
+		let sss = loss[loss.length-parseInt(loss.length*0.01)-1][1] - loss[loss.length-1][1];
+		if(Math.abs((momentumWW[momentumWW.length-1][0][0] * learningRate)) < 0.01 && learningRate < 50&& isSigmoid && sss < 0.00000001 && momentumSpeed == 0){
+			learningRate += 0.01;
+			document.getElementById('lrRate').value = learningRate;
+		}
 	}
-	
+	document.getElementById('lrRate').value = learningRate;
+	document.getElementById('gradMomentum').value = momentumSpeed;
 	var feedFwrd = feedforward(ww, inputData);
 	
     return feedFwrd[feedFwrd.length-1];

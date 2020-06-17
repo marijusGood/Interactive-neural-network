@@ -181,16 +181,24 @@ display: inline-block;
 		<label for="noSoft">No</label><br>
 	</div>
 	
+	<p>Use "automatic learning rate picker"?:</p>
+		<input type="radio" id="yesAuto" value="Yes">
+		<label for="yesAuto">Yes</label><br>
+		<input type="radio" id="noAuto" value="No" checked>
+		<label for="noAuto">No</label><br>
+	
 	<p>Learning rate: <input style="width: 75px;" min="0" oninput="this.value = Math.abs(this.value)" type="number" id="lrRate" value="0.01"></p>
 	
 	<p>Mini Batch size: <input type="number" style="width: 50px;" min="0" oninput="this.value = Math.abs(this.value)" id="miniBatch" value="4"></p>
 	
-	<p>gradients momentum speed: <input type="number" style="width: 50px;" min="0" oninput="this.value = Math.abs(this.value)" id="gradMomentum" value="0"></p>
+	<p>gradients momentum speed: <input type="number" style="width: 50px;" min="0" oninput="this.value = Math.abs(this.value)" id="gradMomentum" value="0.9"></p>
 	
-	<p>number of iterations: <input type="number" id="numIta" min="0" oninput="this.value = Math.abs(this.value)" style="width: 100px;" value="1"></p>
+	<p>number of iterations: <input type="number" id="numIta" min="0" oninput="this.value = Math.abs(this.value)" style="width: 100px;" value="1000"></p>
 	
 	<button id="norml">Do data normalization</button>
-	<br> <br> 
+	<br>
+	<p> Beware of the vanishing or exploding gradient!!!</p>
+
 	<button id="backProp">Backpropagation</button>
 	
 	<p>The cost of the network:</p>

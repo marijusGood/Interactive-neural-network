@@ -4,23 +4,23 @@ var canvs = document.getElementById("snow");//this is the canvas element in the 
 var ctx = canvs.getContext("2d");//
 var ww = [];//this is where all the wights and biases are stored for each layer
 var loss = [];//stores the loss of each iteration for Google graph to display
-var learningRate = 0.05;//this is the learning rate of the gradient
+var learningRate = 0.01;//this is the learning rate of the gradient
 var isSigmoid = false;//is sigmoid activation function on?
 var isIdentity = false;//is Identity activation function on?
 var isOwnInput = false;//is the user typing his own input?
 var isTanh = false;//is ThaN activation function on?
 var isSoftmax = false;//is softmax activation function on?
 var isRelu = true;// is ReLU activation function on?
-var numerOfIta = 1;// the number of iterations to do when the button "Backpropagations" is pressed
+var numerOfIta = 1000;// the number of iterations to do when the button "Backpropagations" is pressed
 /*this is how many nodes are in a layer. The very last element is the input layer and the very
 first element is the output and in between are the hidden layers*/
-var nodeCount = [1, 2];
+var nodeCount = [1,1,1,1,1, 2];
 var inputData =  [[1, 1],//input data, inputData[i] is what goes to the input layer
 				[1, 0],
 				[0, 1],
 				[0, 0]];
 var expectedOutput = [[1],[0],[0],[0]];//expectedOutput[i] is what expected in output layer
-var momentumSpeed = 0;//the momentum(speed) the gradient is allowed to go
+var momentumSpeed = 0.9;//the momentum(speed) the gradient is allowed to go
 var momentumWW = [];//this is identical to ww but it stores the past momentum of the gradient
 /*this is the same as inputData and expectedOutput, but it is shuffled, because I couldn't then display the
 input data and predicted data together in the table, the data would be changing every iteration
