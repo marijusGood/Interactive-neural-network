@@ -77,6 +77,9 @@ function switchingBetweenDatas(){
 	document.getElementById("layers").innerHTML = "";//reset the display data like how many layer there are
 	document.getElementById("nodeNum").innerHTML = "";
 	document.getElementById('norml').disabled = false;//allow to normalize data
+	//and it resets the learning rate
+	document.getElementById("lrRate").value = "0.01";
+	learningRate = 0.01;
 }
 
 $(document).ready(function(){
@@ -245,6 +248,9 @@ $(document).ready(function(){
 		isOwnInput = true;
 		removeSoftmax();
 		drawChart();
+		//and it resets the learning rate
+		document.getElementById("lrRate").value = "0.01";
+		learningRate = 0.01;
 	});
 	
 	/** removes a node and a column from the input layer and table when you press the "-" button next to
@@ -679,6 +685,21 @@ $(document).ready(function(){
 			isSoftmax = true;
 		}
 	});
+	/** if automatic learning rate picker is selected to yes then doLRoptimization true */
+	$("#yesAuto").change(function(){
+		if( $(this).is(":checked") ){
+			doLRoptimization = true;
+			genereateW();
+			momentumSpeed = 0.9;
+		}
+	})
+	/** if automatic learning rate picker is selected to no then doLRoptimization false */
+	$("#noAuto").change(function(){
+		if( $(this).is(":checked") ){
+			doLRoptimization = false;
+			genereateW();
+		}
+	})
 	
 });
 

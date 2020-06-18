@@ -11,10 +11,11 @@ var isOwnInput = false;//is the user typing his own input?
 var isTanh = false;//is ThaN activation function on?
 var isSoftmax = false;//is softmax activation function on?
 var isRelu = true;// is ReLU activation function on?
+var doLRoptimization = true;//is learning rate optimization is selected
 var numerOfIta = 1000;// the number of iterations to do when the button "Backpropagations" is pressed
 /*this is how many nodes are in a layer. The very last element is the input layer and the very
 first element is the output and in between are the hidden layers*/
-var nodeCount = [1,1,1,1,1, 2];
+var nodeCount = [1,6,6,6,6, 2];
 var inputData =  [[1, 1],//input data, inputData[i] is what goes to the input layer
 				[1, 0],
 				[0, 1],
@@ -28,7 +29,7 @@ and it wouldn't look nice*/
 var shuffleInput, shuffleOut;
 var minibatch = inputData.length;//length of the mini batch
 var derNodes;//this is bad implementation, but it is the derivative of the softmax 
-var table = document.getElementById("tables");//tabel in HTML
+var table = document.getElementById("tables");//table in HTML
 
 /**
  *resize the canvas when the page is loaded, generate new weights, create the table
