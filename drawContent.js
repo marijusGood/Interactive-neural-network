@@ -15,7 +15,7 @@ var doLRoptimization = true;//is learning rate optimization is selected
 var numerOfIta = 1000;// the number of iterations to do when the button "Backpropagations" is pressed
 /*this is how many nodes are in a layer. The very last element is the input layer and the very
 first element is the output and in between are the hidden layers*/
-var nodeCount = [1,6,6,6,6, 2];
+var nodeCount = [1, 2];
 var inputData =  [[1, 1],//input data, inputData[i] is what goes to the input layer
 				[1, 0],
 				[0, 1],
