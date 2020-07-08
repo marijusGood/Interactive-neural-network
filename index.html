@@ -31,9 +31,9 @@ body {font-family: Arial, Helvetica, sans-serif;}
   background-color: rgb(0,0,0); /* Fallback color */
   background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
   -webkit-animation-name: fadeIn; /* Fade in the background */
-  -webkit-animation-duration: 0.4s;
+  -webkit-animation-duration: 0.1s;
   animation-name: fadeIn;
-  animation-duration: 0.4s
+  animation-duration: 0.1s
 }
 
 /* Modal Content */
@@ -43,9 +43,9 @@ body {font-family: Arial, Helvetica, sans-serif;}
   background-color: #fefefe;
   width: 100%;
   -webkit-animation-name: slideIn;
-  -webkit-animation-duration: 0.4s;
+  -webkit-animation-duration: 0.2s;
   animation-name: slideIn;
-  animation-duration: 0.4s
+  animation-duration: 0.2s
 }
 
 /* The Close Button */
@@ -200,6 +200,24 @@ transition: all 0.3s ease 0s;
 
 </div>
 
+
+<!-- To warn mobile users that this is not for them -->
+
+<div id="notMobile" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="close">&times;</span>
+      <h1>Not for mobile users!!!</h1>
+    </div>
+    <div class="modal-body">
+      <h1>This website is not made for mobile users, advance at your own risk. Use desktop to experience the full potential.</h1>
+    </div>
+  </div>
+
+</div>
+
 <!-- all of the parameters for the network -->
 <div class="params">
 	
@@ -301,8 +319,10 @@ Your browser does not support the canvas element. You Should use newer website.
 
 <script>
 var modal = document.getElementById("myModal");
+var notMobile = document.getElementById("notMobile");
 var btn = document.getElementById("myBtn");
 var span = document.getElementsByClassName("close")[0];
+var notMobileClose = document.getElementsByClassName("close")[1];
 
 /** When the user clicks the button, open the modal */
 btn.onclick = function() {
@@ -314,12 +334,27 @@ span.onclick = function() {
   modal.style.display = "none";
 }
 
+/** When the user clicks on <span> (x), close the modal */
+notMobileClose.onclick = function() {
+  notMobile.style.display = "none";
+}
+
 /** When the user clicks anywhere outside of the modal, close it */
 window.onclick = function(event) {
   if (event.target == modal) {
     modal.style.display = "none";
   }
+  if (event.target == notMobile) {
+	notMobile.style.display = "none";
+  }
 }
+
+/** Check if the user is using mobile device*/
+var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+if (isMobile) {
+	notMobile.style.display = "block";
+}
+
 </script>
 
 <!-- all of the code for running the network and its options -->
